@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .tab-container .tab-content{
+            clear: both;
+        }
+
+        .tab-container .tab-header div.current{
+            background-color: #269abc;
+        }
+
+        .tab-container .tab-header div{
+            width:200px;
+            padding:10px;
+            margin-right: 10px;
+            background-color: #5d8a4a;
+            text-align: center;
+
+        }
+
+        .tab-container .tab-content div.current{
+            display: block;
+        }
+        .tab-container .tab-content div{
+            display: none;
+        }
+
+        .tab-container .tab-header div,
+        .tab-container .tab-content div{
+            float: left;
+        }
+    </style>
+</head>
+<body>
+
+</body>
+<script src="jquery-2.1.4.js"></script>
+<script>
+    function Tab(parent, data) {
+        this.$parent = $(parent);
+        this.data = data;
+
+        this.init();
+    }
+    Tab.prototype = {
+        constructor: Tab,
+        init: function () {
+            this.renderDom();
+            this.bindEvents();
+        },
+        renderDom: function () {
+            var $container = $("<div></div>")
+                    .addClass("tab-container")
+                    .append("<div class='tab-header'></div><div class='tab-content'></div>");
+
+            $.each(this.data,function(i,singleData){
+                $container
+                        .find(".tab-header").append("<div>"+singleData.title+"</div>")
+                        .end()
+                        .find(".tab-content").append("<div>"+singleData.content+"</div>");
+            });
+            //默认选中第一个标题和第一个内容
+            $container.find(".tab-header div:eq(0),.tab-content div:eq(0)").addClass("current");
+
+
+            //1、将它追加到父元素中 2、将它赋值给$container属性
+            this.$container=$container.appendTo(this.$parent);
+
+        },
+        bindEvents: function () {
+            var self=this;
+            //点击每一个标题：.tab-header下面的每一个div
+            self.$container.on("click",".tab-header div",function(){
+                $(this).addClass("current").siblings().removeClass("current");
+                var index=$(this).index();//获取该标题的索引
+
+                //让指定的内容隐藏和显示
+                self.$container.find(".tab-content div").eq(index).addClass("current").siblings().removeClass("current");
+            });
+        }
+
+    }
+
+    var data = [
+        {title: "标题1", content: "内容1内容1内容1内容1内容1内容1内容1内容1内容1内容1内容1内容1内容1"},
+        {title: "标题2", content: "内容2内容1内容1内容1内容1内容1内容1内容1内容1内容1内容1内容1内容1"},
+        {title: "标题3", content: "内容3内容1内容1内容1内容1内容1内容1内容1内容1内容1内容1内容1内容1"}];
+
+    var tab = new Tab("body",data);
+</script>
+</html>

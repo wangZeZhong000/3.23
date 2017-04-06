@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+<script src="jq.js"></script>
+<script>
+    jQuery.fn.extend({
+        //$("div").hasClass("tag")
+        //判断对象中的DOM元素是否存在该类名
+        hasClass: function (className) {
+            var isExist = false;
+            this.each(function () {
+                if ((" " + this.className + " ").indexOf(" " + className + " ") + 1) {
+                    isExist = true;
+                    return false;//终止DOM元素的遍历
+                }
+            })
+
+            return isExist;
+        },
+        //为每一个DOM元素添加一个或者多个类名，多个类名之间以空格隔开
+        //$("div").addClass("a b c")
+        addClass: function (strClassName) {
+            var classNames = strClassName.split(" ");
+
+            return this.each(function () {
+                var dom = this;
+
+                jQuery.each(classNames, function (i, singleClassName) {
+                    if (!jQuery(dom).hasClass(singleClassName)) {
+                        dom.className += " " + singleClassName;
+                    }
+                })
+            })
+        },
+        removeClass: function (strClassName) {
+            if (arguments.length == 0) {
+                return this.each(function () {
+                    var dom = this;
+                    dom.className = "";
+                });
+            }
+
+
+            var classNames = strClassName.split(" ");
+            return this.each(function () {
+                var dom = this;
+                var domClassNameChange = " " + dom.className + " ";
+
+                jQuery.each(classNames, function (i, singleClassName) {
+                    var singleClassNameChange = " " + singleClassName + " ";
+
+                    domClassNameChange = domClassNameChange.replace(singleClassNameChange, " ");
+                });
+                dom.className = domClassNameChange;
+            });
+        },
+
+        //为每一个DOM元素切换一个或者多个类名
+        //$("div").toggleClass("a b c")
+        toggleClass: function (strClassName) {
+            var classNames = strClassName.split(" ");
+
+            return this.each(function () {
+                var $dom = jQuery(this);
+                jQuery.each(classNames, function (i, singleClassName) {
+                    if ($dom.hasClass(singleClassName)) {
+                        $dom.removeClass(singleClassName)
+                    } else {
+                        $dom.addClass(singleClassName);
+                    }
+                })
+            })
+        },
+        val: function (value) {
+            var nodeName;
+            if (arguments.length == 0) {
+                //获取值——>获取第一个DOM元素的值
+                var firstDom = this.get(0);
+                nodeName = firstDom.nodeName.toLowerCase();
+                switch (nodeName) {
+                    case "input":
+                        return firstDom.value;
+                    case "option":
+                        return firstDom.value || firstDom.innerText;
+                    case "select":
+                        var isMultiple = firstDom.multiple;
+                        if (!isMultiple) return firstDom.value;
+
+                        var result = [];
+                        var options = firstDom.getElementsByTagName("option");
+                        jQuery.each(options, function (i, option) {
+                            if (option.selected) {
+                                result.push(option.value || option.innerText);
+                            }
+                        });
+
+                        return result;
+                }
+
+            }
+
+            //设置每一个元素的值
+            return this.each(function(){
+                var dom=this;
+                nodeName=dom.nodeName.toLowerCase();
+                switch(nodeName){
+                    case "input":
+                            if(dom.type=="radio" || dom.type=="checkbox"){
+//                                if(dom.value===value){
+//                                    dom.checked=true;
+//                                }
+
+                                dom.checked=dom.value==value;
+                            }else{
+                                dom.value=value;
+                            }
+                        break;//也可以使用：return;
+                    case "option":
+                            dom.value=value;
+                        break;
+                    case "select":
+                            var options=dom.getElementsByTagName("option");
+
+                            var isExist=false;
+                            jQuery.each(options,function(i,option){
+                                if(option.value===value){
+                                    option.selected=true;
+                                    isExist=true;
+                                }
+                            });
+                            if(!isExist) dom.selectedIndex=-1;
+                        break;
+                }
+            });
+
+
+
+        }
+    })
+</script>
+</html>

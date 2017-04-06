@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="d1" style="margin:10px;padding:30px;background-color: #daa520;">
+    <div style="padding: 30px;background-color: pink"></div>
+</div>
+<div id="d2" style="margin:10px;padding:30px;background-color: #daa520;">
+    <div style="padding: 30px;background-color: pink"></div>
+</div>
+</body>
+<script src="jq.js"></script>
+<script>
+    var d1=$("#d1").get(0);
+    d1.onmouseenter=function(){
+        console.log("d1进入");
+    };
+    d1.onmouseleave=function(){
+        console.log("d1离开");
+    };
+
+    //mouseover/mouseout进入子元素同样会触发该事件
+    var d2=$("#d2").get(0);
+    d2.onmouseover=function(e){
+        console.log(e.target);
+        console.log("d2进入");
+    };
+    d2.onmouseout=function(e){
+        console.log(e.target);
+        console.log("d2离开");
+    };
+</script>
+</html>

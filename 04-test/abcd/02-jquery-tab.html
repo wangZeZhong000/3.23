@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .tab-container .tab-content{
+            clear: both;
+        }
+
+        .tab-container .tab-header div.current{
+            background-color: #269abc;
+        }
+
+        .tab-container .tab-header div{
+            width:200px;
+            padding:10px;
+            margin-right: 10px;
+            background-color: #5d8a4a;
+            text-align: center;
+
+        }
+
+        .tab-container .tab-content div.current{
+            display: block;
+        }
+        .tab-container .tab-content div{
+            display: none;
+        }
+
+        .tab-container .tab-header div,
+        .tab-container .tab-content div{
+            float: left;
+        }
+    </style>
+</head>
+<body>
+
+</body>
+<script src="jquery-2.1.4.js"></script>
+<script src="jquery-tab.js"></script>
+<script>
+    var data = [
+        {title: "标题1", content: "内容1内容1内容1内容1内容1内容1内容1内容1内容1内容1内容1内容1内容1"},
+        {title: "标题2", content: "内容2内容1内容1内容1内容1内容1内容1内容1内容1内容1内容1内容1内容1"},
+        {title: "标题3", content: "内容3内容1内容1内容1内容1内容1内容1内容1内容1内容1内容1内容1内容1"}];
+
+    $("body").tab(data);
+</script>
+</html>

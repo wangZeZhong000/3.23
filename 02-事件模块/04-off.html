@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="button" value="点我" id="btn"/>
+</body>
+<script src="jq.js"></script>
+<script>
+    jQuery.fn.extend({
+        on:function(type,callback){
+            return this.each(function(){
+                var dom=this;
+                dom.addEventListener(type,callback);
+            });
+        },
+        off:function(type,callback){
+            return this.each(function(){
+                var dom=this;
+                dom.removeEventListener(type,callback);
+            });
+        }
+    });
+
+    var eventTypes="click dblclick mouseenter mouseleave mouseover mouseout mousemove keydown keyup keypress load".split(" ");
+    for (var i = 0; i < eventTypes.length; i++) {
+        var eventType = eventTypes[i];
+        jQuery.fn[eventType]=(function(e){
+            return function(callback){
+                return this.on(e,callback);
+            }
+        })(eventType)
+    }
+
+    $("#btn")
+            .mouseenter(function(){
+        console.log("进入");
+    }).mouseleave(function(){
+        console.log("移出");
+    })
+
+</script>
+</html>
